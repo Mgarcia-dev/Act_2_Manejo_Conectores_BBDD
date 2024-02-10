@@ -51,6 +51,14 @@ public class GestorCoches {
 	}
 	
 	
+	// MÉTODOS DE LOS PASAJEROS
+	  
+	public boolean addPasajeroCoche(int idPasajero, String idCoche) {
+		return daoCoche.addPasajeroCoche(idPasajero, idCoche);
+		
+	}
+	
+	
 
 
 

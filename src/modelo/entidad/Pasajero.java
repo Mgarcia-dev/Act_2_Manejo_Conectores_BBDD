@@ -21,6 +21,9 @@ public class Pasajero implements Serializable{
 		this.peso = peso;
 	}
 
+	public Pasajero() {
+		
+	}
 	public int getId() {
 		return id;
 	}

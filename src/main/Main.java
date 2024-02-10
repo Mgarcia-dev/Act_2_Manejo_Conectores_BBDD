@@ -72,6 +72,7 @@ public class Main {
 			}
 			
 		}
+		sc.close();
 	}
 	
 	// Menu principal
@@ -106,25 +107,31 @@ public class Main {
 			
 			case 1: 
 				// Crear nuevo pasajero
+				createPassenger();
 				break;
 			case 2: 
 				// Borrar pasajero por ID
-				
+				delPassenger();
 				break;
 			case 3: 
 				// Consultar pasajero por ID
+				consultPassengerById();
 				break;
 			case 4:
 				// Listar pasajeros
+				toListPassengers();
 				break;
 			case 5:
 				// Añadir pasajero al coche
+				addPassengerToCar();
 				break;
 			case 6:
 				// Eliminar pasajero del coche
+				delPassengerOfCar();
 				break;
 			case 7: 
 				// Listar pasajeros de un coche
+				toListPassengersOfCar();
 				break;
 			case 8:
 				menu();
@@ -263,7 +270,35 @@ public class Main {
 	}
 	
 	
+	// MÉTODOS PARA PASAJEROS 
 	
+	private static void createPassenger() {
+		
+	}
+	
+	private static void delPassenger() {
+		
+	}
+	
+	private static void consultPassengerById() {
+		
+	}
+	
+	private static void toListPassengers() {
+		
+	}
+	
+	private static void addPassengerToCar() {
+		
+	}
+	
+	private static void delPassengerOfCar() {
+		
+	}
+	
+	private static void toListPassengersOfCar() {
+		
+	}
 	
 	
 	

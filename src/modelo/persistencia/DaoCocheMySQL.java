@@ -10,9 +10,11 @@ import java.util.List;
 
 
 import modelo.entidad.Coche;
+import modelo.entidad.Pasajero;
 import modelo.persistencia.interfaces.DaoCoche;
 
 public class DaoCocheMySQL implements DaoCoche{
+	
 	
 	// CONEXION A LA BBDD COCHE
 	
@@ -229,16 +231,16 @@ public class DaoCocheMySQL implements DaoCoche{
 				System.out.print(" - Kms: ");
 				System.out.print(rs.getString("KM"));
 				System.out.println("\n");
-				/*
-				Coche coche = new Coche();
-				coche.setId(rs.getString(1));
-				coche.setMarca(rs.getString(2));
-				coche.setModelo(rs.getString(3));
-				coche.setAnoFab(rs.getInt(4));
-				coche.setKm(rs.getInt(5));
-				
-				carList.add(coche);
-				*/
+
+
+
+
+
+
+
+
+
+
 			}
 		
 		} catch (SQLException e) {
@@ -249,6 +251,192 @@ public class DaoCocheMySQL implements DaoCoche{
 		}
 		*/
 		return null;
+	}
+
+	@Override
+	public boolean addPasajeroCoche(int idPasajero, String idCoche) {
+		
+		boolean add = false;
+		
+		String query = "UPDATE COCHES SET PASAJERO_ID = ? WHERE ID = ?";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			
+			ps.setInt(1, idPasajero);
+			ps.setString(2, idCoche);
+			
+			
+			int numFilasAfectadas = ps.executeUpdate();
+			
+			if(numFilasAfectadas == 0) {
+				add = false;
+			} else {
+				add = true;
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Error al añadir: " + idPasajero);
+			add = false;
+			e.printStackTrace();
+		}
+		return add;
+	}
+
+	@Override
+	public boolean delPasajeroCoche(int idPasajero) {
+		
+		boolean deleted = false;
+		
+		String query = "UPDATE COCHES SET PASAJERO_ID = NULL WHERE PASAJERO_ID = ?";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			ps.setInt(1, idPasajero);
+			
+			int numRowAfected = ps.executeUpdate();
+			
+			if(numRowAfected == 0) {
+				deleted = false;
+			} else {
+				deleted = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("No se ha podido realizar la baja del coche con id: " + idPasajero);
+			e.printStackTrace();
+		} /*finally {
+			closeConnection();
+		}
+		*/
+		return deleted;
+		
+	}
+
+	@Override
+	public List<Pasajero> listarPasajerosCoche(int idCoche) {
+		
+		List<Pasajero> pasajeros = new ArrayList<>();
+		
+		String query = "SELECT * FROM PASAJEROS WHERE ID IN (SELECT PASAJERO_ID FROM COCHES WHERE ID = ?)";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			
+			ps.setInt(1, idCoche);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				System.out.print("ID: ");
+				System.out.print(rs.getString("ID"));
+				System.out.print(" - Nombre: ");
+				System.out.print(rs.getString("NOMBRE"));
+				System.out.print(" - Edad: ");
+				System.out.print(rs.getString("EDAD"));
+				System.out.print(" - Peso: ");
+				System.out.print(rs.getString("PESO"));
+				System.out.println("\n");
+			}
+		
+		} catch (SQLException e) {
+			System.out.println("Error al obtener la lista de pasajeros");
+			e.printStackTrace();
+		}
+		return pasajeros;
+	}
+
+	@Override
+	public boolean addPassenger(Pasajero p) {
+		
+		boolean add = true;
+		
+		String query = "INSERT INTO PASAJEROS (ID, NOMBRE, EDAD, PESO) VALUES (?,?,?,?)";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			
+			ps.setInt(1, p.getId());
+			ps.setString(2, p.getNombre());
+			ps.setInt(3, p.getEdad());
+			ps.setDouble(4, p.getPeso());
+			
+			
+			int numFilasAfectadas = ps.executeUpdate();
+			
+			if(numFilasAfectadas == 0) {
+				add = false;
+			} else {
+				add = true;
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Error al añadir: " + p);
+			add = false;
+			e.printStackTrace();
+		} 
+		return add;
+	}
+
+	@Override
+	public boolean delPassenger(int id) {
+		
+		boolean deleted = false;
+		
+		String query = "DELETE FROM PASAJEROS WHERE ID = ?";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			ps.setInt(1, id);
+			
+			int numRowAfected = ps.executeUpdate();
+			
+			if(numRowAfected == 0) {
+				deleted = false;
+			} else {
+				deleted = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("No se ha podido realizar la baja del pasajero con id: " + id);
+			e.printStackTrace();
+		} 
+		return deleted;
+	}
+
+	@Override
+	public Pasajero consultPassenger(int id) {
+		
+		Pasajero p = null;
+		
+		String query = "SELECT * FROM PASAJEROS WHERE ID=?";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				p = new Pasajero();
+				p.setId(rs.getInt(1));
+				p.setNombre(rs.getString(2));
+				p.setEdad(rs.getInt(3));
+				p.setPeso(4);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Error al obtener el coche con id: " + id);
+			e.printStackTrace();
+		} /*finally {
+			closeConnection();
+		}
+		*/
+		return p;
+	}
+
+	@Override
+	public List<Pasajero> toListPassengers() {
+		return null;
+		
 	}
 
 	
