@@ -274,7 +274,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	}
 
 	@Override
-	public List<Pasajero> listarPasajerosCoche(int idCoche) {
+	public List<Pasajero> listarPasajerosCoche(String idCoche) {
 		
 		List<Pasajero> pasajeros = new ArrayList<>();
 		
@@ -283,7 +283,7 @@ public class DaoCocheMySQL implements DaoCoche{
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
 			PreparedStatement ps = conexion.prepareStatement(query);
 			
-			ps.setInt(1, idCoche);
+			ps.setString(1, idCoche);
 			
 			ResultSet rs = ps.executeQuery();
 			

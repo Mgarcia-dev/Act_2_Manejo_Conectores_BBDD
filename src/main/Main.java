@@ -65,15 +65,14 @@ public class Main {
 				
 			case 7: 
 				System.out.println("*** Fin del programa *** ");
+				sc.close();
 				break;
 				
 			default:
 				System.out.println("Opción incorrecta. Por favor, introduzca una opción válida\n");
 				break;
 			}
-			
 		}
-		sc.close();
 	}
 	
 	// Menu principal
@@ -338,6 +337,7 @@ public class Main {
 	}
 	
 	private static void toListPassengers() {
+		
 		GestorCoches gc = new GestorCoches();
 		
 		List<Pasajero> pasengerList = gc.toListPassengers();
@@ -345,13 +345,57 @@ public class Main {
 	
 	private static void addPassengerToCar() {
 		
+		GestorCoches gc = new GestorCoches();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("--- Añadir pasajero a un coche ---\n");
+		System.out.println("Introduzca el ID del pasajero: ");
+		int idPasajero = sc.nextInt();
+		System.out.println("Introduzca el ID del coche para añadir al pasajero: ");
+		String idCoche = sc.next();
+		System.out.println("");
+		
+		boolean añadido = gc.addPPassengerOfCar(idPasajero, idCoche);
+		
+		if(añadido == true) {
+			System.out.println("Pasajero con ID: " + idPasajero +  " ha sido "
+					+ "añadido con éxito!\n");
+		} else {
+			System.out.println("Error al añadir pasajero\n");
+		}
 	}
 	
 	private static void delPassengerOfCar() {
+		GestorCoches gc = new GestorCoches();
+		Scanner sc = new Scanner(System.in);
 		
+		System.out.println("--- Borrar pasajero de un coche ---\n");
+		System.out.println("Introduzca el ID del pasajero: ");
+		int idPasajero = sc.nextInt();
+		System.out.println("");
+		
+		boolean añadido = gc.delPassengerOfCar(idPasajero);
+		
+		if(añadido == true) {
+			System.out.println("Pasajero con ID: " + idPasajero +  " ha sido "
+					+ "borrado del coche con éxito!\n");
+		} else {
+			System.out.println("Error al añadir pasajero\n");
+		}
 	}
 	
 	private static void toListPassengersOfCar() {
+		GestorCoches gc = new GestorCoches();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Introduzca el ID del coche para obtener el listado de pasajeros: ");
+		String idCoche = sc.next();
+		
+		List<Pasajero> passengerCarList = gc.toListPassengersOfCar(idCoche);
+		
+		if(passengerCarList == null ) {
+			System.out.println("El coche no tiene pasajeros");
+		} 
 		
 	}
 	

@@ -86,7 +86,7 @@ public class GestorCoches {
 		return daoCoche.delPasajeroCoche(idPasajero);
 	}
 	
-	public List<Pasajero> toListPassengersOfCar (int idCoche) {
+	public List<Pasajero> toListPassengersOfCar (String idCoche) {
 		List<Pasajero> passengerCarList = daoCoche.listarPasajerosCoche(idCoche);
 		return passengerCarList;
 		

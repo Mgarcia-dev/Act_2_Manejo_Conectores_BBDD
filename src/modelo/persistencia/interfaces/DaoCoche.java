@@ -25,7 +25,7 @@ public interface DaoCoche {
 	public List<Pasajero> toListPassengers();
 	public boolean addPasajeroCoche(int idPasajero, String idCoche);
 	public boolean delPasajeroCoche(int idPasajero);
-	public List<Pasajero> listarPasajerosCoche(int idCoche);
+	public List<Pasajero> listarPasajerosCoche(String idCoche);
 	
 	
 
