@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import modelo.entidad.Coche;
+import modelo.entidad.Pasajero;
 import modelo.negocio.GestorCoches;
 
 public class Main {
@@ -266,7 +267,6 @@ public class Main {
 		
 		List<Coche> listaCoches = gc.toList();
 		
-		
 	}
 	
 	
@@ -274,18 +274,73 @@ public class Main {
 	
 	private static void createPassenger() {
 		
+		GestorCoches gc = new GestorCoches();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Introduzca los datos del nuevo pasajero: ");
+		System.out.println("ID: ");
+		int idPasajero = sc.nextInt();
+		
+		System.out.println("Nombre: ");
+		String nombre = sc.next();
+		
+		System.out.println("Edad: ");
+		int edad = sc.nextInt();
+		
+		System.out.println("Peso: ");
+		double peso = sc.nextDouble();
+		
+		Pasajero p = new Pasajero(idPasajero, nombre, edad, peso);
+		
+		boolean añadido = gc.addPassenger(p);
+		
+		if(añadido == true) {
+			System.out.println("Pasajero creado con éxito!\n");
+		} else {
+			System.out.println("Error al crear pasajero\n");
+		}
 	}
 	
 	private static void delPassenger() {
+		GestorCoches gc = new GestorCoches();
+		Scanner sc = new Scanner(System.in);
 		
+		System.out.println("Introduzca el ID del pasajero que desea elimiar: ");
+		int eliminarId = sc.nextInt();
+		
+		boolean borrado = gc.delPassenger(eliminarId);
+		if(borrado == true) {
+			System.out.println("Pasajero borrado.");
+		} else {
+			System.out.println("Fallo al eliminar el pasajero.");
+		}
 	}
 	
 	private static void consultPassengerById() {
 		
+		GestorCoches gc = new GestorCoches();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Intoduzca el ID del pasajero que desea obtener: ");
+		int idPasajero = sc.nextInt();
+		
+		Pasajero p = gc.consultPassengerById(idPasajero);
+		if(p != null) {
+			System.out.println("\nEl resultado obtenido es el siguiente: ");
+			System.out.println("ID: " + p.getId());
+			System.out.println("Nombre: " + p.getNombre());
+			System.out.println("Edad: " + p.getEdad());
+			System.out.println("Peso: " + p.getPeso());
+			System.out.println("");
+		} else {
+			System.out.println("No se ha podido obtener el resultado.");
+		}
 	}
 	
 	private static void toListPassengers() {
+		GestorCoches gc = new GestorCoches();
 		
+		List<Pasajero> pasengerList = gc.toListPassengers();
 	}
 	
 	private static void addPassengerToCar() {

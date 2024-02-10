@@ -13,9 +13,9 @@ public class Pasajero implements Serializable{
 	private int edad;
 	private double peso;
 	
-	public Pasajero(int id, String nombre, int edad, double peso) {
+	public Pasajero(int idPasajero, String nombre, int edad, double peso) {
 		super();
-		this.id = id;
+		this.id = idPasajero;
 		this.nombre = nombre;
 		this.edad = edad;
 		this.peso = peso;

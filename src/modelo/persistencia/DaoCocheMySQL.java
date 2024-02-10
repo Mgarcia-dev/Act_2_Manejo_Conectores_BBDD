@@ -15,7 +15,6 @@ import modelo.persistencia.interfaces.DaoCoche;
 
 public class DaoCocheMySQL implements DaoCoche{
 	
-	
 	// CONEXION A LA BBDD COCHE
 	
 	private Connection conexion;
@@ -83,21 +82,14 @@ public class DaoCocheMySQL implements DaoCoche{
 			System.out.println("Error al añadir: " + c);
 			add = false;
 			e.printStackTrace();
-		} /*finally {
-			closeConnection();
-		}
-		*/
+		} 
 		return add;
 	}
 
 	// BORRRAR COCHE POR ID
 	@Override
 	public boolean delCoche(String id) {
-		/*
-		if(!openConnection()) {
-			return false;
-		}
-		*/
+		
 		boolean deleted = false;
 		
 		String query = "DELETE FROM COCHES WHERE ID = ?";
@@ -116,10 +108,7 @@ public class DaoCocheMySQL implements DaoCoche{
 		} catch (SQLException e) {
 			System.out.println("No se ha podido realizar la baja del coche con id: " + id);
 			e.printStackTrace();
-		} /*finally {
-			closeConnection();
-		}
-		*/
+		} 
 		return deleted;
 	}
 
@@ -127,11 +116,6 @@ public class DaoCocheMySQL implements DaoCoche{
 	// MODIFICAR COCHE 
 	@Override
 	public boolean modCoche(Coche c) {
-		/*
-		if(!openConnection()) {
-			return false;
-		}
-		*/
 		
 		boolean modified = false;
 		String query = "UPDATE COCHES SET MARCA=?, MODELO=?, AÑO_FABRICACION=?, KM=? WHERE ID=?";
@@ -162,16 +146,12 @@ public class DaoCocheMySQL implements DaoCoche{
 		
 		return modified;
 	}
-
+	
 	
 	// Consultar coche por ID
 	@Override
 	public Coche consultarCoche(String id) {
-		/*
-		if(!openConnection()) {
-			return null;
-		}
-		*/
+		
 		Coche car = null;
 		
 		String query = "SELECT * FROM COCHES WHERE ID=?";
@@ -194,10 +174,7 @@ public class DaoCocheMySQL implements DaoCoche{
 		} catch (SQLException e) {
 			System.out.println("Error al obtener el coche con id: " + id);
 			e.printStackTrace();
-		} /*finally {
-			closeConnection();
-		}
-		*/
+		} 
 		return car;
 	}
 
@@ -205,11 +182,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	// Listar coches
 	@Override
 	public List<Coche> toList() {
-		/*
-		if(!openConnection()) {
-			return null;
-		}
-		*/
+		
 		List<Coche> carList = new ArrayList<>();
 		
 		String query = "SELECT ID, MARCA, MODELO, AÑO_FABRICACION, KM FROM COCHES";
@@ -231,28 +204,18 @@ public class DaoCocheMySQL implements DaoCoche{
 				System.out.print(" - Kms: ");
 				System.out.print(rs.getString("KM"));
 				System.out.println("\n");
-
-
-
-
-
-
-
-
-
-
 			}
 		
 		} catch (SQLException e) {
 			System.out.println("Error al obtener la lista de coches");
 			e.printStackTrace();
-		} /*finally {
-			closeConnection();
-		}
-		*/
-		return null;
+		} 
+		return carList;
 	}
 
+	
+	// MÉTODOS PARA PASAJEROS
+	
 	@Override
 	public boolean addPasajeroCoche(int idPasajero, String idCoche) {
 		
@@ -283,6 +246,8 @@ public class DaoCocheMySQL implements DaoCoche{
 		return add;
 	}
 
+	
+	// QUERY MAL REDACTADA
 	@Override
 	public boolean delPasajeroCoche(int idPasajero) {
 		
@@ -304,12 +269,8 @@ public class DaoCocheMySQL implements DaoCoche{
 		} catch (SQLException e) {
 			System.out.println("No se ha podido realizar la baja del coche con id: " + idPasajero);
 			e.printStackTrace();
-		} /*finally {
-			closeConnection();
-		}
-		*/
+		} 
 		return deleted;
-		
 	}
 
 	@Override
@@ -420,7 +381,7 @@ public class DaoCocheMySQL implements DaoCoche{
 				p.setId(rs.getInt(1));
 				p.setNombre(rs.getString(2));
 				p.setEdad(rs.getInt(3));
-				p.setPeso(4);
+				p.setPeso(rs.getDouble(4));
 			}
 			
 		} catch (SQLException e) {
@@ -435,7 +396,33 @@ public class DaoCocheMySQL implements DaoCoche{
 
 	@Override
 	public List<Pasajero> toListPassengers() {
-		return null;
+		
+		List<Pasajero> passengerList = new ArrayList<>();
+		
+		String query = "SELECT ID, NOMBRE, EDAD, PESO FROM PASAJEROS";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+		
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				System.out.print("ID: ");
+				System.out.print(rs.getInt("ID"));
+				System.out.print(" - Nombre: ");
+				System.out.print(rs.getString("NOMBRE"));
+				System.out.print(" - Edad: ");
+				System.out.print(rs.getString("EDAD"));
+				System.out.print(" - Peso: ");
+				System.out.print(rs.getString("PESO"));
+				System.out.println("\n");
+			}
+		
+		} catch (SQLException e) {
+			System.out.println("Error al obtener la lista de pasajeros");
+			e.printStackTrace();
+		} 
+		return passengerList;
 		
 	}
 
