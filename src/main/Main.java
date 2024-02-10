@@ -173,7 +173,7 @@ public class Main {
 		System.out.println("Km: ");
 		int km = sc.nextInt();
 		
-		Coche coche = new Coche(idCoche, marca, modelo, añoFab, km);
+		Coche coche = new Coche(idCoche, marca, modelo, añoFab, km, null);
 		//gc.addCoche(coche);
 		
 		boolean añadido = gc.addCoche(coche);
@@ -241,7 +241,7 @@ public class Main {
 		System.out.println("Introduzca km: ");
 		int nuevosKms = sc.nextInt();
 		
-		Coche coche = new Coche(idCoche, nuevaMarca, nuevoModelo, nuevoAñoFab, nuevosKms);
+		Coche coche = new Coche(idCoche, nuevaMarca, nuevoModelo, nuevoAñoFab, nuevosKms, null);
 		
 		boolean modificado = gc.modify(coche);
 		
