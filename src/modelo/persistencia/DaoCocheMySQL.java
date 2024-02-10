@@ -181,7 +181,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	
 	// Listar coches
 	@Override
-	public List<Coche> toList() {
+	public List<Coche> listarCoches() {
 		
 		List<Coche> carList = new ArrayList<>();
 		
@@ -307,7 +307,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	}
 
 	@Override
-	public boolean addPassenger(Pasajero p) {
+	public boolean addPasajero(Pasajero p) {
 		
 		boolean add = true;
 		
@@ -339,7 +339,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	}
 
 	@Override
-	public boolean delPassenger(int id) {
+	public boolean delPasajero(int id) {
 		
 		boolean deleted = false;
 		
@@ -364,7 +364,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	}
 
 	@Override
-	public Pasajero consultPassenger(int id) {
+	public Pasajero consultarPasajero(int id) {
 		
 		Pasajero p = null;
 		
@@ -395,7 +395,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	}
 
 	@Override
-	public List<Pasajero> toListPassengers() {
+	public List<Pasajero> listarPasajeros() {
 		
 		List<Pasajero> passengerList = new ArrayList<>();
 		

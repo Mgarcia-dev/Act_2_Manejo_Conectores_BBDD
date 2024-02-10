@@ -25,12 +25,6 @@ public class GestorCoches {
 	// MODIFY
 	public boolean modify (Coche c) {
 			boolean modified = daoCoche.modCoche(c);
-			/*
-			if(c.getMarca().isEmpty() && c.getModelo().isEmpty()) {
-				System.out.println("La marca y el modelo no deben estar en blanco! ");
-				modified = false;
-			}
-			*/
 			if(modified) {
 				return true;
 			} else {
@@ -46,7 +40,7 @@ public class GestorCoches {
 	
 	// LISTAR
 	public List<Coche> toList() {
-		List<Coche> listaCoches = daoCoche.toList();
+		List<Coche> listaCoches = daoCoche.listarCoches();
 		return listaCoches;
 	}
 	
@@ -54,35 +48,35 @@ public class GestorCoches {
 	// MÉTODOS DE LOS PASAJEROS
 	
 	// ADD
-	public boolean addPassenger(Pasajero p) {
-		return daoCoche.addPassenger(p);
+	public boolean addPasajero(Pasajero p) {
+		return daoCoche.addPasajero(p);
 		
 	}
 	
 	// DEL
-		public boolean delPassenger(int id) {
-			return daoCoche.delPassenger(id);
+		public boolean delPasajero(int id) {
+			return daoCoche.delPasajero(id);
 		}
 	
 	// CONSULTAR POR ID
-	public Pasajero consultPassengerById (int id) {
-		Pasajero p= daoCoche.consultPassenger(id);
+	public Pasajero consultarPasajeroById (int id) {
+		Pasajero p = daoCoche.consultarPasajero(id);
 		return p;
 	}
 	
 	// LISTAR
 		public List<Pasajero> toListPassengers() {
-			List<Pasajero> passengerList = daoCoche.toListPassengers();
+			List<Pasajero> passengerList = daoCoche.listarPasajeros();
 			return passengerList;
 		}
 	
 	// AÑADIR PASAJERO A COCHE
-	public boolean addPPassengerOfCar(int idPasajero, String idCoche) {
+	public boolean addPasajeroCoche(int idPasajero, String idCoche) {
 		return daoCoche.addPasajeroCoche(idPasajero, idCoche);
 	}
 	
 	// BORRAR PASAJERO DE COCHE
-	public boolean delPassengerOfCar(int idPasajero) {
+	public boolean delPasajeroCoche(int idPasajero) {
 		return daoCoche.delPasajeroCoche(idPasajero);
 	}
 	

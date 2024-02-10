@@ -55,7 +55,7 @@ public class Main {
 				
 			case 5:
 				// Listar coches
-				toListCoches();
+				listarCoches();
 				break;
 				
 			case 6:
@@ -107,31 +107,31 @@ public class Main {
 			
 			case 1: 
 				// Crear nuevo pasajero
-				createPassenger();
+				crearPasajero();
 				break;
 			case 2: 
 				// Borrar pasajero por ID
-				delPassenger();
+				borrarPasajero();
 				break;
 			case 3: 
 				// Consultar pasajero por ID
-				consultPassengerById();
+				consultarPasajeroById();
 				break;
 			case 4:
 				// Listar pasajeros
-				toListPassengers();
+				listarpasajeros();
 				break;
 			case 5:
 				// Añadir pasajero al coche
-				addPassengerToCar();
+				addPasajeroCoche();
 				break;
 			case 6:
 				// Eliminar pasajero del coche
-				delPassengerOfCar();
+				borrarPasajeroCoche();
 				break;
 			case 7: 
 				// Listar pasajeros de un coche
-				toListPassengersOfCar();
+				listarPasajerosCoche();
 				break;
 			case 8:
 				menu();
@@ -260,7 +260,7 @@ public class Main {
 		
 	}
 	
-	public static void toListCoches() {
+	public static void listarCoches() {
 		
 		GestorCoches gc = new GestorCoches();
 		
@@ -271,7 +271,7 @@ public class Main {
 	
 	// MÉTODOS PARA PASAJEROS 
 	
-	private static void createPassenger() {
+	private static void crearPasajero() {
 		
 		GestorCoches gc = new GestorCoches();
 		Scanner sc = new Scanner(System.in);
@@ -291,7 +291,7 @@ public class Main {
 		
 		Pasajero p = new Pasajero(idPasajero, nombre, edad, peso);
 		
-		boolean añadido = gc.addPassenger(p);
+		boolean añadido = gc.addPasajero(p);
 		
 		if(añadido == true) {
 			System.out.println("Pasajero creado con éxito!\n");
@@ -300,14 +300,14 @@ public class Main {
 		}
 	}
 	
-	private static void delPassenger() {
+	private static void borrarPasajero() {
 		GestorCoches gc = new GestorCoches();
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("Introduzca el ID del pasajero que desea elimiar: ");
 		int eliminarId = sc.nextInt();
 		
-		boolean borrado = gc.delPassenger(eliminarId);
+		boolean borrado = gc.delPasajero(eliminarId);
 		if(borrado == true) {
 			System.out.println("Pasajero borrado.");
 		} else {
@@ -315,7 +315,7 @@ public class Main {
 		}
 	}
 	
-	private static void consultPassengerById() {
+	private static void consultarPasajeroById() {
 		
 		GestorCoches gc = new GestorCoches();
 		Scanner sc = new Scanner(System.in);
@@ -323,7 +323,7 @@ public class Main {
 		System.out.println("Intoduzca el ID del pasajero que desea obtener: ");
 		int idPasajero = sc.nextInt();
 		
-		Pasajero p = gc.consultPassengerById(idPasajero);
+		Pasajero p = gc.consultarPasajeroById(idPasajero);
 		if(p != null) {
 			System.out.println("\nEl resultado obtenido es el siguiente: ");
 			System.out.println("ID: " + p.getId());
@@ -336,14 +336,14 @@ public class Main {
 		}
 	}
 	
-	private static void toListPassengers() {
+	private static void listarpasajeros() {
 		
 		GestorCoches gc = new GestorCoches();
 		
 		List<Pasajero> pasengerList = gc.toListPassengers();
 	}
 	
-	private static void addPassengerToCar() {
+	private static void addPasajeroCoche() {
 		
 		GestorCoches gc = new GestorCoches();
 		Scanner sc = new Scanner(System.in);
@@ -355,7 +355,7 @@ public class Main {
 		String idCoche = sc.next();
 		System.out.println("");
 		
-		boolean añadido = gc.addPPassengerOfCar(idPasajero, idCoche);
+		boolean añadido = gc.addPasajeroCoche(idPasajero, idCoche);
 		
 		if(añadido == true) {
 			System.out.println("Pasajero con ID: " + idPasajero +  " ha sido "
@@ -365,7 +365,7 @@ public class Main {
 		}
 	}
 	
-	private static void delPassengerOfCar() {
+	private static void borrarPasajeroCoche() {
 		GestorCoches gc = new GestorCoches();
 		Scanner sc = new Scanner(System.in);
 		
@@ -374,7 +374,7 @@ public class Main {
 		int idPasajero = sc.nextInt();
 		System.out.println("");
 		
-		boolean añadido = gc.delPassengerOfCar(idPasajero);
+		boolean añadido = gc.delPasajeroCoche(idPasajero);
 		
 		if(añadido == true) {
 			System.out.println("Pasajero con ID: " + idPasajero +  " ha sido "
@@ -384,7 +384,7 @@ public class Main {
 		}
 	}
 	
-	private static void toListPassengersOfCar() {
+	private static void listarPasajerosCoche() {
 		GestorCoches gc = new GestorCoches();
 		Scanner sc = new Scanner(System.in);
 		
