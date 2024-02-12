@@ -1,8 +1,5 @@
-package main;
+package vista;
 
-
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,7 +31,7 @@ public class Main {
 			switch (option) {
 			
 			case 1: 
-				// Añadir coche ( ID autoincremental)
+				// Añadir coche
 				añadirCoche();
 				break;
 				
@@ -165,6 +162,7 @@ public class Main {
 	// AQUI SE AÑADEN LOS MÉTODOS DEL gc
 	
 	public static void añadirCoche() {
+		
 		GestorCoches gc = new GestorCoches();
 		Scanner sc = new Scanner(System.in);
 		
@@ -187,10 +185,11 @@ public class Main {
 		
 		if(añadido == true) {
 			System.out.println("Coche añadido con éxito!");
-		} else {
+		} 
+		/*else {
 			System.out.println("Error al añadir el coche a la base de datos");
 		}
-		
+		*/
 		
 		
 	}
@@ -205,9 +204,8 @@ public class Main {
 		boolean borrado = gc.delCoche(eliminarId);
 		if(borrado == true) {
 			System.out.println("Coche borrado.");
-		} else {
-			System.out.println("Fallo al eliminar el coche.");
-		}
+		} 
+		
 	}
 
 	public static void consultarCoche() {
@@ -227,7 +225,7 @@ public class Main {
 			System.out.println("KM: " + coche.getKm());
 			System.out.println("");
 		} else {
-			System.out.println("No se ha podido obtener el resultado.");
+			System.out.println("El coche con ID: " + idCoche + " no se encuentra en la base de datos\n");
 		}
 	}
 	
@@ -251,12 +249,6 @@ public class Main {
 		Coche coche = new Coche(idCoche, nuevaMarca, nuevoModelo, nuevoAñoFab, nuevosKms, null);
 		
 		boolean modificado = gc.modify(coche);
-		
-		if(modificado = true) {
-			System.out.println("Coche modificado correctamente");
-		} else {
-			System.out.println("Error al modificar coche");
-		}
 		
 	}
 	
@@ -293,11 +285,6 @@ public class Main {
 		
 		boolean añadido = gc.addPasajero(p);
 		
-		if(añadido == true) {
-			System.out.println("Pasajero creado con éxito!\n");
-		} else {
-			System.out.println("Error al crear pasajero\n");
-		}
 	}
 	
 	private static void borrarPasajero() {
@@ -308,11 +295,7 @@ public class Main {
 		int eliminarId = sc.nextInt();
 		
 		boolean borrado = gc.delPasajero(eliminarId);
-		if(borrado == true) {
-			System.out.println("Pasajero borrado.");
-		} else {
-			System.out.println("Fallo al eliminar el pasajero.");
-		}
+
 	}
 	
 	private static void consultarPasajeroById() {
@@ -332,7 +315,7 @@ public class Main {
 			System.out.println("Peso: " + p.getPeso());
 			System.out.println("");
 		} else {
-			System.out.println("No se ha podido obtener el resultado.");
+			System.out.println("No existe el pasajero con id: " + idPasajero + "\n");
 		}
 	}
 	
@@ -341,6 +324,7 @@ public class Main {
 		GestorCoches gc = new GestorCoches();
 		
 		List<Pasajero> pasengerList = gc.toListPassengers();
+	
 	}
 	
 	private static void addPasajeroCoche() {

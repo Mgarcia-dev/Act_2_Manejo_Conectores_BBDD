@@ -62,22 +62,29 @@ public class DaoCocheMySQL implements DaoCoche{
 		String query = "INSERT INTO COCHES (ID, MARCA, MODELO, AÑO_FABRICACION, KM) VALUES (?,?,?,?,?)";
 		
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
-			PreparedStatement ps = conexion.prepareStatement(query);
+			if (!cocheExiste(c.getId())) {
+				
 			
-			ps.setString(1, c.getId());
-			ps.setString(2, c.getMarca());
-			ps.setString(3, c.getModelo());
-			ps.setInt(4, c.getAnoFab());
-			ps.setInt(5, c.getKm());
+				PreparedStatement ps = conexion.prepareStatement(query);
+				
+				ps.setString(1, c.getId());
+				ps.setString(2, c.getMarca());
+				ps.setString(3, c.getModelo());
+				ps.setInt(4, c.getAnoFab());
+				ps.setInt(5, c.getKm());
+				
+				int numFilasAfectadas = ps.executeUpdate();
+				
+				if(numFilasAfectadas == 0) {
+					add = false;
+				} else {
+					add = true;
+				}
 			
-			int numFilasAfectadas = ps.executeUpdate();
-			
-			if(numFilasAfectadas == 0) {
-				add = false;
 			} else {
-				add = true;
+				add = false;
+				System.out.println("El coche con ID: " + c.getId() + " ya se encuentra en la base de datos");
 			}
-			
 		} catch (SQLException e) {
 			System.out.println("Error al añadir: " + c);
 			add = false;
@@ -95,15 +102,22 @@ public class DaoCocheMySQL implements DaoCoche{
 		String query = "DELETE FROM COCHES WHERE ID = ?";
 		
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
-			PreparedStatement ps = conexion.prepareStatement(query);
-			ps.setString(1, id);
-			
-			int numRowAfected = ps.executeUpdate();
-			
-			if(numRowAfected == 0) {
-				deleted = false;
+			if(cocheExiste(id)) {
+				
+				PreparedStatement ps = conexion.prepareStatement(query);
+				ps.setString(1, id);
+				
+				int numRowAfected = ps.executeUpdate();
+				
+				if(numRowAfected == 0) {
+					deleted = false;
+				} else {
+					deleted = true;
+				}
+				
 			} else {
-				deleted = true;
+				deleted = false;
+				System.out.println("El coche con ID: " + id + " no se encuentra en la base de datos\n");
 			}
 		} catch (SQLException e) {
 			System.out.println("No se ha podido realizar la baja del coche con id: " + id);
@@ -121,23 +135,28 @@ public class DaoCocheMySQL implements DaoCoche{
 		String query = "UPDATE COCHES SET MARCA=?, MODELO=?, AÑO_FABRICACION=?, KM=? WHERE ID=?";
 		
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
-			PreparedStatement ps = conexion.prepareStatement(query);
+			if(cocheExiste(c.getId())) {
+				
+				PreparedStatement ps = conexion.prepareStatement(query);
+				
+				ps.setString(1, c.getMarca());
+				ps.setString(2, c.getModelo());
+				ps.setInt(3, c.getAnoFab());
+				ps.setInt(4, c.getKm());
+				ps.setString(5, c.getId());
+				
+				int numRowAfected = ps.executeUpdate();
+				
+				if(numRowAfected == 0) {
+					modified = false;
+				} else {
+					modified = true;
+					System.out.println("coche modificado correctamente");
+				}
 			
-			ps.setString(1, c.getMarca());
-			ps.setString(2, c.getModelo());
-			ps.setInt(3, c.getAnoFab());
-			ps.setInt(4, c.getKm());
-			ps.setString(5, c.getId());
-			
-			int numRowAfected = ps.executeUpdate();
-			
-			if(numRowAfected == 0) {
-				modified = false;
 			} else {
-				modified = true;
+				System.out.println("El coche con ID: " + c.getId() + " no existe en la BBDD\n");
 			}
-			
-			
 		} catch (SQLException e) {
 			System.out.println("Error al modificar el coche: " + c);
 			modified=false;
@@ -157,19 +176,21 @@ public class DaoCocheMySQL implements DaoCoche{
 		String query = "SELECT * FROM COCHES WHERE ID=?";
 		
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
-			PreparedStatement ps = conexion.prepareStatement(query);
-			ps.setString(1, id);
+		
+				PreparedStatement ps = conexion.prepareStatement(query);
+				ps.setString(1, id);
+				
+				ResultSet rs = ps.executeQuery();
+				
+				while(rs.next()) {
+					car = new Coche();
+					car.setId(rs.getString(1));
+					car.setMarca(rs.getString(2));
+					car.setModelo(rs.getString(3));
+					car.setAnoFab(rs.getInt(4));
+					car.setKm(rs.getInt(5));
+				}
 			
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				car = new Coche();
-				car.setId(rs.getString(1));
-				car.setMarca(rs.getString(2));
-				car.setModelo(rs.getString(3));
-				car.setAnoFab(rs.getInt(4));
-				car.setKm(rs.getInt(5));
-			}
 			
 		} catch (SQLException e) {
 			System.out.println("Error al obtener el coche con id: " + id);
@@ -216,6 +237,7 @@ public class DaoCocheMySQL implements DaoCoche{
 	
 	// MÉTODOS PARA PASAJEROS
 	
+	
 	@Override
 	public boolean addPasajeroCoche(int idPasajero, String idCoche) {
 		
@@ -224,20 +246,21 @@ public class DaoCocheMySQL implements DaoCoche{
 		String query = "UPDATE COCHES SET PASAJERO_ID = ? WHERE ID = ?";
 		
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
-			PreparedStatement ps = conexion.prepareStatement(query);
-			
-			ps.setInt(1, idPasajero);
-			ps.setString(2, idCoche);
-			
-			
-			int numFilasAfectadas = ps.executeUpdate();
-			
-			if(numFilasAfectadas == 0) {
-				add = false;
-			} else {
-				add = true;
-			}
-			
+				
+				PreparedStatement ps = conexion.prepareStatement(query);
+				
+				ps.setInt(1, idPasajero);
+				ps.setString(2, idCoche);
+				
+				
+				int numFilasAfectadas = ps.executeUpdate();
+				
+				if(numFilasAfectadas == 0) {
+					add = false;
+				} else {
+					add = true;
+				}
+
 		} catch (SQLException e) {
 			System.out.println("Error al añadir: " + idPasajero);
 			add = false;
@@ -314,22 +337,27 @@ public class DaoCocheMySQL implements DaoCoche{
 		String query = "INSERT INTO PASAJEROS (ID, NOMBRE, EDAD, PESO) VALUES (?,?,?,?)";
 		
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
-			PreparedStatement ps = conexion.prepareStatement(query);
+			if(!pasajeroExiste(p.getId())) {
 			
-			ps.setInt(1, p.getId());
-			ps.setString(2, p.getNombre());
-			ps.setInt(3, p.getEdad());
-			ps.setDouble(4, p.getPeso());
-			
-			
-			int numFilasAfectadas = ps.executeUpdate();
-			
-			if(numFilasAfectadas == 0) {
-				add = false;
+				PreparedStatement ps = conexion.prepareStatement(query);
+				
+				ps.setInt(1, p.getId());
+				ps.setString(2, p.getNombre());
+				ps.setInt(3, p.getEdad());
+				ps.setDouble(4, p.getPeso());
+				
+				
+				int numFilasAfectadas = ps.executeUpdate();
+				
+				if(numFilasAfectadas == 0) {
+					add = false;
+				} else {
+					add = true;
+				}
 			} else {
-				add = true;
+				System.out.println("El pasajero con ID: " + p.getId() + " ya existe!\n");
+				add = false;
 			}
-			
 		} catch (SQLException e) {
 			System.out.println("Error al añadir: " + p);
 			add = false;
@@ -346,15 +374,20 @@ public class DaoCocheMySQL implements DaoCoche{
 		String query = "DELETE FROM PASAJEROS WHERE ID = ?";
 		
 		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
-			PreparedStatement ps = conexion.prepareStatement(query);
-			ps.setInt(1, id);
-			
-			int numRowAfected = ps.executeUpdate();
-			
-			if(numRowAfected == 0) {
-				deleted = false;
+			if(pasajeroExiste(id)) {
+				
+				PreparedStatement ps = conexion.prepareStatement(query);
+				ps.setInt(1, id);
+				
+				int numRowAfected = ps.executeUpdate();
+				
+				if(numRowAfected == 0) {
+					deleted = false;
+				} else {
+					deleted = true;
+				}
 			} else {
-				deleted = true;
+				System.out.println("No se puede borrar el pasajero con ID: " + id + " porque no existe en BBDD");
 			}
 		} catch (SQLException e) {
 			System.out.println("No se ha podido realizar la baja del pasajero con id: " + id);
@@ -387,13 +420,11 @@ public class DaoCocheMySQL implements DaoCoche{
 		} catch (SQLException e) {
 			System.out.println("Error al obtener el coche con id: " + id);
 			e.printStackTrace();
-		} /*finally {
-			closeConnection();
-		}
-		*/
+		} 
 		return p;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public List<Pasajero> listarPasajeros() {
 		
@@ -417,15 +448,96 @@ public class DaoCocheMySQL implements DaoCoche{
 				System.out.print(rs.getString("PESO"));
 				System.out.println("\n");
 			}
-		
+			
+			
 		} catch (SQLException e) {
 			System.out.println("Error al obtener la lista de pasajeros");
 			e.printStackTrace();
 		} 
-		return passengerList;
+			if(passengerList == null) {
+				System.out.println("Lista de pasajeros vacía");
+			}
+			return passengerList;
+			
+		
 		
 	}
 
-	
-	
+	/**
+	 * Método para comprobar si un coche ya existe en la base de datos
+	 * Se utilizará en los métodos para los cuales necesitemos saber, en primer lugar, 
+	 * si el coche existe para poder añadirlo, borrarlo o modificarlo.
+	 * @param idCoche
+	 * @return True si el coche existe, false en caso contrario
+	 */
+	@Override
+	public boolean cocheExiste(String idCoche) {
+		boolean existe = false;
+		Coche car = null;
+		
+		String query = "SELECT * FROM COCHES WHERE ID=?";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			ps.setString(1, idCoche);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				car = new Coche();
+				car.setId(rs.getString(1));
+				car.setMarca(rs.getString(2));
+				car.setModelo(rs.getString(3));
+				car.setAnoFab(rs.getInt(4));
+				car.setKm(rs.getInt(5));
+			}
+			if(car != null) {
+				existe = true;
+			} else {
+				existe = false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			existe = false;
+		} 
+		return existe;
+		
+		
+	}
+
+	@Override
+	public boolean pasajeroExiste(int id) {
+		
+		boolean existe = false;
+		Pasajero p = null;
+		
+		String query = "SELECT * FROM PASAJEROS WHERE ID=?";
+		
+		try (Connection conexion = DriverManager.getConnection(cadenaConexion, user, pass)){
+			PreparedStatement ps = conexion.prepareStatement(query);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				p = new Pasajero();
+				p.setId(rs.getInt(1));
+				p.setNombre(rs.getString(2));
+				p.setEdad(rs.getInt(3));
+				p.setPeso(rs.getDouble(4));
+				
+			}
+			if(p != null) {
+				existe = true;
+			} else {
+				existe = false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			existe = false;
+		} 
+		return existe;
+	}
 }

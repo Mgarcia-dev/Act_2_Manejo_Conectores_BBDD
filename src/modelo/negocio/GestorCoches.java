@@ -10,7 +10,7 @@ import modelo.persistencia.interfaces.DaoCoche;
 public class GestorCoches {
 
 	private DaoCoche daoCoche = new DaoCocheMySQL();
-
+	
 	// ADD
 	public boolean addCoche(Coche c) {
 		return daoCoche.addCoche(c);
@@ -44,6 +44,7 @@ public class GestorCoches {
 		return listaCoches;
 	}
 	
+	// ______________________________________________________________________
 	
 	// MÉTODOS DE LOS PASAJEROS
 	
@@ -86,35 +87,12 @@ public class GestorCoches {
 		
 	}
 	
+	public boolean cocheExiste(String idCoche) {
+		return daoCoche.cocheExiste(idCoche);
+	}
 	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	public boolean pasajeroExiste(int id) {
+		return daoCoche.pasajeroExiste(id);
+	}
 
 }

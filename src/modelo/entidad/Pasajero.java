@@ -1,7 +1,7 @@
 package modelo.entidad;
 
 import java.io.Serializable;
-import java.util.Objects;
+
 
 public class Pasajero implements Serializable{
 
@@ -61,23 +61,7 @@ public class Pasajero implements Serializable{
 		return "Pasajero [id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", peso=" + peso + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(edad, id, nombre, peso);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pasajero other = (Pasajero) obj;
-		return edad == other.edad && id == other.id && Objects.equals(nombre, other.nombre)
-				&& Double.doubleToLongBits(peso) == Double.doubleToLongBits(other.peso);
-	}
+	
 	
 	
 	

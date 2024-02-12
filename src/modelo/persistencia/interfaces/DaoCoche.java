@@ -18,6 +18,8 @@ public interface DaoCoche {
 	public Coche consultarCoche (String id);
 	public List<Coche> listarCoches();
 	
+	public boolean cocheExiste(String id);
+	
 	// Métodos para pasajeros
 	public boolean addPasajero(Pasajero p);
 	public boolean delPasajero(int id);
@@ -27,6 +29,7 @@ public interface DaoCoche {
 	public boolean delPasajeroCoche(int idPasajero);
 	public List<Pasajero> listarPasajerosCoche(String idCoche);
 	
+	public boolean pasajeroExiste(int id);
 	
 
 }
